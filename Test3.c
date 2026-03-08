@@ -12,7 +12,7 @@ int main()
     
     // Camera2D camera = { 0 };
     
-    InitWindow(ScreenWidth, ScreenHeight, "Test3-Basic Movements");
+    InitWindow(ScreenWidth, ScreenHeight, "Test3-Basic Movements"); 
     
     Vector2 CirclePosition = {central_x,central_y};
     
