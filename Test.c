@@ -22,7 +22,7 @@ int main()
     // ToggleFullscreen();
 
     //Main Game Loop
-    while(!WindowShouldClose())
+    while(!WindowShouldClose())     //Detects Window Closed or Esc Key
     {
         //Drawing
         BeginDrawing();
