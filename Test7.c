@@ -10,8 +10,8 @@ int main()
     const int ScreenHeight = 600;
     
     //Virtual Screen Width and height
-    const int VirtualWidth = 400;
-    const int VirtualHeight = 300;
+    const int VirtualWidth = ScreenWidth/2;
+    const int VirtualHeight = ScreenHeight/2;
     
     const float virtualRatio = (float)ScreenWidth/(float)VirtualWidth;
     
@@ -112,7 +112,7 @@ int main()
 //  Learn More about Math.h and learn some code :)              (x)
 
 //  Make a width slider changer for a 3d effect (fun) (will have do in another code (Test8)).
-//  Make it dynamic like we can pixelize at any point (x4 (current), x5, x6...) and the object will be in the center (will have to do in anothor code (Test8)).
+//  Make it dynamic like we can pixelize at any point (2x (current), 3x, 4x, 5x, 6x...) and the object will be in the center (will have to do in anothor code (Test8)).
 
 //FUNFACTS: 
 // turncf (for float), turncl (for long), turnc (for double) is used to removes the values after decimal point (e.g. 45.2546554 to 45.0000000).

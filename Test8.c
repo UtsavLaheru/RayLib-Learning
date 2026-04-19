@@ -8,27 +8,33 @@ int main()
     const int ScreenHeight = 600;
     
     //Virtual Screen Width and height
-    const int VirtualWidth = 400;
-    const int VirtualHeight = 300;
+    const int VirtualWidth = ScreenWidth/2;       //For 2x (Current) the Width is 400 and Height 300
+    const int VirtualHeight = ScreenHeight/2;
     
+    //For Flexibly Changing Width and Height
+    int ChangeableHeight = VirtualHeight;
     int ChangeableWidth = VirtualWidth;
     bool Changed = true;
     
     float virtualRatio;
     
-
     
     const int central_x = ScreenWidth/2;
     const int central_y = ScreenHeight/2;
     
     InitWindow(ScreenWidth, ScreenHeight, "Test8-Pixelized Widget 2");
     
-    Vector2 offset = {-200, -100};
+ 
     
     Camera2D ScreenSpaceCamera = { 0 };
     ScreenSpaceCamera.zoom = 1.0f;
     
-    Camera2D WorldSpaceCamera = { offset };
+    
+    
+    
+    /* printf("Offset X:%f, Y:%f\n", offset_d.x, offset_d.y); */
+    
+    Camera2D WorldSpaceCamera = { 0 };
     WorldSpaceCamera.zoom = 1.0f;
     
     Rectangle box1 = { central_x, central_y, 45, 80};
@@ -50,6 +56,8 @@ int main()
     float CameraX = 0.0f;
     float CameraY = 0.0f;
     
+    
+    
     SetTargetFPS(60);
     while(!WindowShouldClose())
     {
@@ -59,19 +67,59 @@ int main()
             if(IsKeyDown(KEY_W))
             {
                 ChangeableWidth += 1;
-                Changed = true; 
+                Changed = true;
             }
             if(IsKeyDown(KEY_S))
             {
                 ChangeableWidth -= 1;
                 Changed = true;
-            }            
+            }
+            if(IsKeyPressed(KEY_R))
+            {
+                ChangeableWidth = VirtualWidth;
+                Changed = true;
+            }
+            if(IsKeyDown(KEY_DOWN))
+            {
+                WorldSpaceCamera.zoom -= 0.01f;
+                printf("zoom:%f\n", WorldSpaceCamera.zoom);
+                Changed = true;
+            }
+            //3x Pixalization
+            if(IsKeyPressed(KEY_TWO))
+            {
+                ChangeableWidth = ScreenWidth/3;
+                ChangeableHeight = ScreenHeight/3;
+                WorldSpaceCamera.zoom = 1.0f - 0.4f; 
+                Changed = true;
+            }
+            //4x Pixalization
+            if(IsKeyPressed(KEY_THREE))
+            {
+                ChangeableWidth = ScreenWidth/4;
+                ChangeableHeight = ScreenHeight/4;
+                WorldSpaceCamera.zoom = 1.0f - 0.5f;
+                Changed = true;
+            }
+            //5x Pixalization
+            if(IsKeyPressed(KEY_FOUR))
+            {
+                ChangeableWidth = ScreenWidth/5;
+                ChangeableHeight = ScreenHeight/5;
+                WorldSpaceCamera.zoom = 1.0f - 0.6f;
+                Changed = true;
+            }
+            //Learn  More :)
         }
         
         if(Changed)
         {
+            Vector2 offset = {-ChangeableWidth, -ChangeableHeight}; 
+            //duplicate of offset for testing.
+            Vector2 offset_d = { offset.x - (offset.x/2), offset.y - (offset.y/2)};
+            WorldSpaceCamera.offset =  offset_d;
             virtualRatio = (float)ScreenWidth/(float)ChangeableWidth;
-            target = LoadRenderTexture(ChangeableWidth, VirtualHeight);
+            target = LoadRenderTexture(ChangeableWidth, ChangeableHeight);
             Changed = false;
         }
         
@@ -107,7 +155,6 @@ int main()
                 DrawRectanglePro(box3, box3_origin, rotation, DARKBLUE);
             EndMode2D();
         EndTextureMode();
-        //Learn  More :)
         
         BeginDrawing();
             ClearBackground(RED);
@@ -122,10 +169,15 @@ int main()
     return 0;
 }
 
-//NOTE:This Todo list task are not Memory Efficent, (So please don't use it in Raylib like this instead use Camera2D For dynamic approch) :)
+//NOTE: This Todo list task are not Memory Efficent, (So please don't use it in Raylib like this instead use Camera2D For dynamic approch) :)
+
+//NOTE2: To implement the zoom Part (1.0f (original zoom) - pixelized zoom (like (3x) 0.2 + 2,(4x) 0.3 + 2,..., or (3x) 0.3 + 1, (4x) 0.4 + 1).
+
 //TODO:
 //  Make a width slider changer for a 3d effect (fun).   (x)
-//  Make it dynamic like we can pixelize at any point (x4 (current), x5, x6...) and the object will be in the center.
+//  Make it dynamic like we can pixelize at any point (2x (current), 3x, 4x, 5x, 6x...) and the object will be in the center.
 
 //FUNFACT:
 //  width slider changer for a 3d effect is Fun But, It's not memory efficent because it spams INFO on the console.
+//  Another Written is The Offset_d or Offset Formula for  { offset.x / (offset.x*2), offset.y / (offset.y*2) } (Have Fun).
+//  offset.x + (offset.x*2)/10, offset.y + (offset.y*2)/10.
